@@ -6,7 +6,11 @@
 #include <iostream>      // Include iostream for console input/output
 #include <string>        // Include string for std::string
 #include <limits>        // Include limits for clearing input buffer
-
+// 添加暂停功能的辅助函数
+void pause() {
+    std::cout << "\nPress Enter to continue...";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 // Function to display the main menu options to the user
 void display_menu() { // Function implementation
     std::cout << "\n===== GMP Big Number Tool Menu =====" << std::endl; // Print menu title
@@ -52,6 +56,8 @@ int main() { // Main function definition
                         GMP_Integer b = read_integer("Enter second number (b): "); // Read second number
                         GMP_Integer result = add(a, b); // Perform addition
                         std::cout << "Result (a + b): " << result.toString() << std::endl; // Print result
+
+pause();
                         break; // Exit switch statement
                     } // End case 1
                     case 2: { // Case for Subtraction
@@ -59,6 +65,8 @@ int main() { // Main function definition
                         GMP_Integer b = read_integer("Enter second number (b): "); // Read second number
                         GMP_Integer result = subtract(a, b); // Perform subtraction
                         std::cout << "Result (a - b): " << result.toString() << std::endl; // Print result
+
+pause();
                         break; // Exit switch
                     } // End case 2
                     case 3: { // Case for Multiplication
@@ -74,6 +82,8 @@ int main() { // Main function definition
                         DivisionResult res = divide(a, b); // Perform division
                         std::cout << "Quotient: " << res.quotient.toString() << std::endl; // Print quotient
                         std::cout << "Remainder: " << res.remainder.toString() << std::endl; // Print remainder
+
+pause();
                         break; // Exit switch
                     } // End case 4
                     case 5: { // Case for Modulo
@@ -81,6 +91,8 @@ int main() { // Main function definition
                         GMP_Integer n = read_integer("Enter modulus (n, must be positive): "); // Read modulus
                         GMP_Integer result = modulo(a, n); // Perform modulo operation
                         std::cout << "Result (a mod n): " << result.toString() << std::endl; // Print result
+
+pause();
                         break; // Exit switch
                     } // End case 5
                     case 6: { // Case for Modular Exponentiation
@@ -89,6 +101,8 @@ int main() { // Main function definition
                         GMP_Integer mod = read_integer("Enter modulus (must be positive): "); // Read modulus
                         GMP_Integer result = power(base, exp, mod); // Perform modular exponentiation
                         std::cout << "Result (base^exp mod mod): " << result.toString() << std::endl; // Print result
+
+pause();
                         break; // Exit switch
                     } // End case 6
                     case 7: { // Case for Primality Test
@@ -113,6 +127,8 @@ int main() { // Main function definition
                         std::cout << "Generated probable prime:" << std::endl; // Print header
                         std::cout << prime.toString() << std::endl; // Print the generated prime
                          std::cout << "(Bit length: " << mpz_sizeinbase(prime.get(), 2) << ")" << std::endl; // Print actual bit length
+
+pause();
                         break; // Exit switch
                     } // End case 8
                     case 0: // Case for Exit
@@ -120,6 +136,8 @@ int main() { // Main function definition
                         break; // Exit switch (and loop condition will be false)
                     default: // Handle invalid menu choices
                         std::cerr << "Invalid choice. Please try again." << std::endl; // Print error message
+
+pause();
                         break; // Exit switch
                 } // End switch statement
             } catch (const std::runtime_error& e) { // Catch runtime errors from operations
