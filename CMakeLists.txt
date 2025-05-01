@@ -1,24 +1,40 @@
-# CMakeLists.txt
+cmake_minimum_required(VERSION 3.10)
+project(GMPBigNumTool VERSION 1.0 LANGUAGES CXX)
 
-cmake_minimum_required(VERSION 3.10)        # Specify minimum CMake version required
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-project(GMPBigNumTool VERSION 1.0 LANGUAGES CXX) # Define project name, version, and language (C++)
+# Option 1: Try modern find_package first (if GMP provides a config file)
+find_package(GMP QUIET)
 
-set(CMAKE_CXX_STANDARD 11)                  # Set the C++ standard to C++11 (or higher if needed)
-set(CMAKE_CXX_STANDARD_REQUIRED True)       # Require the specified C++ standard
+# Option 2: Fall back to manual detection if find_package fails
+if(NOT GMP_FOUND)
+    find_path(GMP_INCLUDE_DIR NAMES gmp.h)
+    find_library(GMP_LIBRARY NAMES gmp)
+    find_library(GMPXX_LIBRARY NAMES gmpxx)  # Needed if using C++ bindings
 
-find_package(GMP REQUIRED)                  # Find the GMP library package, it's required for the build
+    if(GMP_INCLUDE_DIR AND GMP_LIBRARY)
+        set(GMP_FOUND TRUE)
+        set(GMP_INCLUDE_DIRS ${GMP_INCLUDE_DIR})
+        set(GMP_LIBRARIES ${GMP_LIBRARY})
+        if(GMPXX_LIBRARY)
+            list(APPEND GMP_LIBRARIES ${GMPXX_LIBRARY})
+        endif()
+    endif()
+endif()
 
-include_directories(${GMP_INCLUDE_DIRS})    # Add GMP include directory to the project's include paths
-include_directories(include)                # Add our own 'include' directory to the project's include paths
+# Fail if GMP not found
+if(NOT GMP_FOUND)
+    message(FATAL_ERROR "GMP library not found. Install libgmp-dev (Linux) or gmp (macOS).")
+endif()
 
-# Gather all source files from the src directory
-file(GLOB SOURCES "src/*.cpp")              # Find all .cpp files in the src directory
+include_directories(${GMP_INCLUDE_DIRS})
+include_directories(include)
 
-add_executable(gmp_tool ${SOURCES})         # Create an executable named 'gmp_tool' from the source files
+file(GLOB SOURCES "src/*.cpp")
+add_executable(gmp_tool ${SOURCES})
 
-# Link the executable against the GMP library
-target_link_libraries(gmp_tool PRIVATE ${GMP_LIBRARIES}) # Link gmp_tool with the found GMP libraries
+target_link_libraries(gmp_tool PRIVATE ${GMP_LIBRARIES})
 
-# Optional: Add install rules if needed for packaging or system-wide installation
-# install(TARGETS gmp_tool DESTINATION bin) # Example install rule
+# Optional: Better to list sources explicitly instead of GLOB
+# set(SOURCES src/main.cpp src/other.cpp)
