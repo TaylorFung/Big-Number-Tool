@@ -1,4 +1,7 @@
 # GMP Big Number Tool
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 
 A command-line tool for performing arbitrary-precision arithmetic using the GMP library.
 
