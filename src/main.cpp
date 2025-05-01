@@ -93,7 +93,7 @@ int main() { // Main function definition
                     } // End case 6
                     case 7: { // Case for Primality Test
                         GMP_Integer n = read_integer("Enter number to test for primality: "); // Read number
-                        int reps = 25; // Number of Miller-Rabin rounds (good default)
+                        int reps = 60; // Number of Miller-Rabin rounds (good default)
                          // You could optionally ask the user for the number of reps
                         int result = is_prime(n, reps); // Perform primality test
                         std::cout << "Primality test result for " << n.toString() << ":" << std::endl; // Print header
